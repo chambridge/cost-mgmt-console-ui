@@ -5,8 +5,42 @@ import { Page, PageSection, Text, TextContent, Title } from '@patternfly/react-c
 import { CheckCircleIcon } from '@patternfly/react-icons';
 import './example.css';
 
+async function getOpenShiftSecret() {
+  const namespace = "costmanagement-metrics-operator";
+  const secretName = "operator-service-account";
+ 
+  const token =  await fetch('/var/run/secrets/kubernetes.io/serviceaccount/token')
+      .then(response => response.text())
+      .catch(err => { throw new Error("Failed to read service account token: " + err) });
+
+  const response = await fetch(`/api/kubernetes/api/v1/namespace/${namespace}/secrets/${secretName}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json'
+      }
+  });
+  if (!response.ok) {
+    throw new Error(`Failed to fetc secret: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  const clientId = atob(data.data["client_id"])
+  const client_secret = atob(data.data["client_secret"])
+  return [clientId, client_secret]
+}
+
+
 export default function ExamplePage() {
-  const { t } = useTranslation('plugin__console-plugin-template');
+  const { t } = useTranslation('plugin__cost-mgmt-ui-console-plugin');
+  const [token, setToken] = React.useState([]);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const token = await getOpenShiftSecret();
+      setToken(token);
+    };
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -20,7 +54,7 @@ export default function ExamplePage() {
         <PageSection variant="light">
           <TextContent>
             <Text component="p">
-              <span className="console-plugin-template__nice">
+              <span className="cost-mgmt-ui-console-plugin__nice">
                 <CheckCircleIcon /> {t('Success!')}
               </span>{' '}
               {t('Your plugin is working.')}
@@ -37,6 +71,7 @@ export default function ExamplePage() {
               <code>{t('console-template-plugin')}</code>{' '}
               {t('and other plugin metadata in package.json with values for your plugin.')}
             </Text>
+            <Text>`{token}`</Text>
           </TextContent>
         </PageSection>
       </Page>

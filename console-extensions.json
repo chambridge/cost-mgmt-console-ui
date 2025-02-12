@@ -3,7 +3,7 @@
     "type": "console.page/route",
     "properties": {
       "exact": true,
-      "path": "/example",
+      "path": "/cost-mgmt",
       "component": { "$codeRef": "ExamplePage" }
     }
   },
@@ -11,8 +11,8 @@
     "type": "console.navigation/href",
     "properties": {
       "id": "example",
-      "name": "%plugin__console-plugin-template~Plugin Example%",
-      "href": "/example",
+      "name": "Cost Management",
+      "href": "/cost-mgmt",
       "perspective": "admin",
       "section": "home"
     }
