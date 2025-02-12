@@ -13,6 +13,9 @@ async function getOpenShiftSecret() {
       .then(response => response.text())
       .catch(err => { throw new Error("Failed to read service account token: " + err) });
 
+  console.log('token: %s', token);
+  console.log('namespace: %s', namespace);
+  console.log('secretName: %s', secretName);
   const response = await fetch(`/api/kubernetes/api/v1/namespace/${namespace}/secrets/${secretName}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
