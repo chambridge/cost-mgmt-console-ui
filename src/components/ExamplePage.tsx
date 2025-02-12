@@ -4,21 +4,38 @@ import { useTranslation } from 'react-i18next';
 import { Page, PageSection, Text, TextContent, Title } from '@patternfly/react-core';
 import { CheckCircleIcon } from '@patternfly/react-icons';
 import './example.css';
+import * as fs from 'fs/promises';
+
+
+async function readFileContents(filePath: string): Promise<string> {
+  try {
+    const fileContents = await fs.readFile(filePath, 'utf-8');
+    return fileContents;
+  } catch (error) {
+    console.error(`Error reading file: ${error}`);
+    throw error;
+  }
+}
 
 async function getOpenShiftSecret() {
   const namespace = "costmanagement-metrics-operator";
   const secretName = "operator-service-account";
- 
-  const token =  await fetch('/var/run/secrets/kubernetes.io/serviceaccount/token')
-      .then(response => response.text())
-      .catch(err => { throw new Error("Failed to read service account token: " + err) });
+  const filePath = '/var/run/secrets/kubernetes.io/serviceaccount/token';
+  const saToken =  readFileContents(filePath)
+  .then(contents => {
+    console.log('File contents:');
+    console.log(contents);
+  })
+  .catch(error => {
+    console.error('Failed to read file.');
+  });
 
-  console.log('token: %s', token);
+  console.log('saToken: %s', saToken);
   console.log('namespace: %s', namespace);
   console.log('secretName: %s', secretName);
   const response = await fetch(`/api/kubernetes/api/v1/namespace/${namespace}/secrets/${secretName}`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${saToken}`,
         'Accept': 'application/json'
       }
   });
