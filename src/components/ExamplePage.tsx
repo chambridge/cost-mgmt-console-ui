@@ -4,15 +4,20 @@ import { useTranslation } from 'react-i18next';
 import { Page, PageSection, Text, TextContent, Title } from '@patternfly/react-core';
 import { CheckCircleIcon } from '@patternfly/react-icons';
 import './example.css';
-import * as fs from 'fs/promises';
 
 
-async function readFileContents(filePath: string): Promise<string> {
+async function loadFile(filePath: string): Promise<string> {
   try {
-    const fileContents = await fs.readFile(filePath, 'utf-8');
-    return fileContents;
+    const response = await fetch(`file://${filePath}`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const text = await response.text();
+    return text;
   } catch (error) {
-    console.error(`Error reading file: ${error}`);
+    console.error("Failed to load file:", error);
     throw error;
   }
 }
@@ -21,7 +26,7 @@ async function getOpenShiftSecret() {
   const namespace = "costmanagement-metrics-operator";
   const secretName = "operator-service-account";
   const filePath = '/var/run/secrets/kubernetes.io/serviceaccount/token';
-  const saToken =  readFileContents(filePath)
+  const saToken =  loadFile(filePath)
   .then(contents => {
     console.log('File contents:');
     console.log(contents);
