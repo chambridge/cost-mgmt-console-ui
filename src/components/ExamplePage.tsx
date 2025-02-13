@@ -6,52 +6,15 @@ import { CheckCircleIcon } from '@patternfly/react-icons';
 import './example.css';
 
 
-async function loadFile(filePath: string): Promise<string> {
-  try {
-    const response = await fetch(`file://${filePath}`);
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const text = await response.text();
-    return text;
-  } catch (error) {
-    console.error("Failed to load file:", error);
-    throw error;
-  }
-}
-
-async function getOpenShiftSecret() {
-  const namespace = "costmanagement-metrics-operator";
-  const secretName = "operator-service-account";
-  const filePath = '/var/run/secrets/kubernetes.io/serviceaccount/token';
-  const saToken =  loadFile(filePath)
-  .then(contents => {
-    console.log('File contents:');
-    console.log(contents);
-  })
-  .catch(error => {
-    console.error('Failed to read file.');
-  });
-
-  console.log('saToken: %s', saToken);
-  console.log('namespace: %s', namespace);
-  console.log('secretName: %s', secretName);
-  const response = await fetch(`/api/kubernetes/api/v1/namespace/${namespace}/secrets/${secretName}`, {
-      headers: {
-        'Authorization': `Bearer ${saToken}`,
-        'Accept': 'application/json'
-      }
-  });
+async function getOpenShiftData() {
+  const costurl = "http://cost-mgmt-proxy.costmanagement-metrics-operator.svc.cluster.local/api/cost-management/v1/reports/openshift/costs/?currency=USD&delta=distributed_cost&filter[cluster]=023d9b0e-7ca6-481d-b04f-ea606becd54e&filter[limit]=10&filter[offset]=0&filter[resolution]=monthly&filter[time_scope_units]=month&filter[time_scope_value]=-1&group_by[project]=*&order_by[distributed_cost]=desc";
+  const response = await fetch(`${costurl}`)
   if (!response.ok) {
     throw new Error(`Failed to fetc secret: ${response.statusText}`);
   }
 
   const data = await response.json();
-  const clientId = atob(data.data["client_id"])
-  const client_secret = atob(data.data["client_secret"])
-  return [clientId, client_secret]
+  return data;
 }
 
 
@@ -61,7 +24,7 @@ export default function ExamplePage() {
 
   React.useEffect(() => {
     const fetchData = async () => {
-      const token = await getOpenShiftSecret();
+      const token = await getOpenShiftData();
       setToken(token);
     };
     fetchData();
