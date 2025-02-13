@@ -25,6 +25,7 @@ export default function ExamplePage() {
   React.useEffect(() => {
     const fetchData = async () => {
       const token = await getOpenShiftData();
+      console.log(token)
       setToken(token);
     };
     fetchData();
@@ -59,7 +60,6 @@ export default function ExamplePage() {
               <code>{t('console-template-plugin')}</code>{' '}
               {t('and other plugin metadata in package.json with values for your plugin.')}
             </Text>
-            <Text>`{token}`</Text>
           </TextContent>
         </PageSection>
       </Page>
