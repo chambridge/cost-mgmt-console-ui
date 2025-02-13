@@ -20,13 +20,11 @@ async function getOpenShiftData() {
 
 export default function ExamplePage() {
   const { t } = useTranslation('plugin__cost-mgmt-ui-console-plugin');
-  const [token, setToken] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
       const token = await getOpenShiftData();
       console.log(token)
-      setToken(token);
     };
     fetchData();
   }, []);
