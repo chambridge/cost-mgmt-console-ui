@@ -5,6 +5,15 @@ metadata:
   labels:
     {{- include "openshift-console-plugin.labels" . | nindent 4 }}
 spec:
+  proxy:
+    - alias: cost-mgmt-proxy
+      authorization: UserToken
+      endpoint:
+        service:
+          name: cost-mgmt-proxy
+          namespace: costmanagement-metrics-operator
+          port: 80
+        type: Service
   displayName: {{ default (printf "%s Plugin" (include "openshift-console-plugin.name" .)) .Values.plugin.description }}
   i18n: 
     loadType: Preload

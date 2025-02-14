@@ -16,16 +16,5 @@
       "perspective": "admin",
       "section": "home"
     }
-  },
-  {
-    "extensions": [
-      {
-        "type": "console.api.proxy",
-        "properties": {
-          "servicePath": "api/proxy/plugin/cost-mgmt-ui-console-plugin/backend",
-          "targetEndpoint": "https://cost-proxy-costmanagement-metrics-operator.apps.costlab.openshift.mbulab.xyz"
-        }
-      }
-    ]
   }
 ]
