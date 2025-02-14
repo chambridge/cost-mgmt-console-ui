@@ -77,7 +77,8 @@
       "ExamplePage": "./components/ExamplePage"
     },
     "dependencies": {
-      "@console/pluginAPI": "*"
+      "@console/pluginAPI": "*",
+      "@openshift-console/dynamic-plugin-sdk": "1.4.0"
     }
   },
   "peerDependencies": {
