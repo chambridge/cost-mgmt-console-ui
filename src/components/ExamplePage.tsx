@@ -30,9 +30,9 @@ export default function ExamplePage() {
   const [projects, setProjects] = React.useState([]);
   React.useEffect(() => {
     const loadProjects = async () => {
-      const { data } = await fetchProjects();
-      setProjects(data.data[0].projects);
-      console.log(data.data[0].projects)
+      const { json } = await fetchProjects();
+      setProjects(json.data[0].projects);
+      console.log(json.data[0].projects);
     };
     loadProjects();
   }, [fetchProjects]);
