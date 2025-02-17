@@ -1,11 +1,9 @@
 import * as React from 'react';
 import Helmet from 'react-helmet';
 import { useTranslation } from 'react-i18next';
-// import { Page, PageSection, Text, TextContent, Title } from '@patternfly/react-core';
 import { Page, PageSection, Title } from '@patternfly/react-core';
-// import { CheckCircleIcon } from '@patternfly/react-icons';
-import './example.css';
 import { Table, Thead, Tbody, Tr, Th, Td } from "@patternfly/react-table";
+import './example.css';
 
 
 
