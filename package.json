@@ -88,6 +88,7 @@
     "mocha": "^10.5.1"
   },
   "dependencies": {
-    "@patternfly/react-table": "^6.1.0"
+    "@patternfly/react-table": "^6.1.0",
+    "@openshift-console/dynamic-plugin-sdk": "1.4.0"
   }
 }
