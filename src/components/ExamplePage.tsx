@@ -4,12 +4,18 @@ import { useTranslation } from 'react-i18next';
 import { Page, PageSection, Text, TextContent, Title } from '@patternfly/react-core';
 import { CheckCircleIcon } from '@patternfly/react-icons';
 import './example.css';
-import { consoleFetchJSON } from '@openshift-console/dynamic-plugin-sdk';
+
 
 
 async function getOpenShiftData() {
   const costurl = "api/proxy/plugin/cost-mgmt-ui-console-plugin/cost-mgmt-proxy/api/cost-management/v1/reports/openshift/costs/?currency=USD&delta=distributed_cost&filter[cluster]=023d9b0e-7ca6-481d-b04f-ea606becd54e&filter[limit]=10&filter[offset]=0&filter[resolution]=monthly&filter[time_scope_units]=month&filter[time_scope_value]=-1&group_by[project]=*&order_by[distributed_cost]=desc";
-  const response = await consoleFetchJSON(`${costurl}`);
+  const response = await fetch(`${costurl}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+  });
   if (!response.ok) {
     throw new Error(`Failed to fetc secret: ${response.statusText}`);
   }
