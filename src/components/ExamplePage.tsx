@@ -17,10 +17,11 @@ async function fetchProjects() {
     },
   });
   if (!response.ok) {
-    throw new Error(`Failed to fetc secret: ${response.statusText}`);
+    throw new Error(`Failed to fetch secret: ${response.statusText}`);
   }
 
   const data = await response.json();
+  console.log(data);
   return data;
 }
 
@@ -31,8 +32,9 @@ export default function ExamplePage() {
   React.useEffect(() => {
     const loadProjects = async () => {
       const { json } = await fetchProjects();
-      setProjects(json.data[0].projects);
-      console.log(json.data[0].projects);
+      if (json && "data" in json && json['data'].length > 0 && "projects" in json["data"][0]){
+        setProjects(json['data'][0]['projects']);
+      }
     };
     loadProjects();
   }, [fetchProjects]);
