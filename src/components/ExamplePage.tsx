@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Helmet from 'react-helmet';
+// import Helmet from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import { Page, PageSection, Title } from '@patternfly/react-core';
 import { Table, Thead, Tbody, Tr, Th, Td } from "@patternfly/react-table";
@@ -40,9 +40,9 @@ export default function ExamplePage() {
 
   return (
     <>
-      <Helmet>
+      <head>
         <title data-test="example-page-title">{t('Projects')}</title>
-      </Helmet>
+      </head>
       <Page>
         <PageSection>
           <Title headingLevel="h1">{t('Projects')}</Title>
