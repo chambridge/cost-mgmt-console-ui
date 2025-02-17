@@ -31,13 +31,12 @@ export default function ExamplePage() {
   React.useEffect(() => {
     const loadProjects = async () => {
       const { data } = await fetchProjects();
-        setProjects(data.data[0].projects);
+      setProjects(data.data[0].projects);
+      console.log(data.data[0].projects)
     };
     loadProjects();
   }, [fetchProjects]);
 
-  // const columns = ["Project", "Cost"];
-  // const rows = projects.map((project) => [project.project, project.values[0].cost.total.value])
 
   return (
     <>
@@ -60,7 +59,7 @@ export default function ExamplePage() {
               {projects.map((project) => (
                 <Tr>
                   <Td>project.project</Td>
-                  <Td>project.values[0].cost.total.value.toFixed(2</Td>
+                  <Td>project.values[0].cost.total.value.toFixed(2)</Td>
                 </Tr>
               ))}
             </Tbody>
