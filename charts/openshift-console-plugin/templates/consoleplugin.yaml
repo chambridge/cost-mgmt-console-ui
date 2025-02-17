@@ -12,7 +12,7 @@ spec:
         service:
           name: cost-mgmt-proxy
           namespace: costmanagement-metrics-operator
-          port: 80
+          port: 443
         type: Service
   displayName: {{ default (printf "%s Plugin" (include "openshift-console-plugin.name" .)) .Values.plugin.description }}
   i18n: 
