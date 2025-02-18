@@ -25,8 +25,8 @@ async function fetchProjects() {
   if (jsonData && "data" in jsonData) {
     if (jsonData["data"] && jsonData["data"].length > 0) {
       if ("projects" in jsonData["data"][0]) {
-        console.log("projects = " + jsonData["data"][0]["projects"]);
         console.log("jsonData[data][0] = " + jsonData["data"][0]);
+        // console.log("projects = " + jsonData["data"][0]["projects"]);
       } else {
         console.log("projects not in jsonData[data][0]");
       }
