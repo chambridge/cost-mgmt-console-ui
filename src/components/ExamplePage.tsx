@@ -32,7 +32,7 @@ async function fetchProjects() {
         console.log("data - projects = " + jsonData["data"][0]["projects"]);
         for (var project of jsonData["data"][0]["projects"]) {
           console.log(project);
-          var projData = {"name": project["project"], "cost": project["values"][0]["cost"]["total"]["value"]};
+          var projData = {"name": project["project"], "cost": project["values"][0]["cost"]["distributed"]["value"]};
           projects.push(projData);
         }
       } else {
