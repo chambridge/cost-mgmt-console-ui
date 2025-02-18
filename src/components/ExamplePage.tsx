@@ -48,6 +48,7 @@ export default function ExamplePage() {
     const loadProjects = async () => {
       const { json } = await fetchProjects();
       if (json && "data" in json && json['data'].length > 0 && "projects" in json["data"][0]){
+        console.log("setProjects");
         setProjects(json['data'][0]['projects']);
       }
     };
@@ -76,7 +77,6 @@ export default function ExamplePage() {
               {projects.map((project) => (
                 <Tr>
                   <Td>{project['project']}</Td>
-                  <Td>{project['values'][0]['cost']['total']['value'].toFixed(2)}</Td>
                 </Tr>
               ))}
             </Tbody>
