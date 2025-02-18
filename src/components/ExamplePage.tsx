@@ -1,8 +1,7 @@
 import * as React from 'react';
 // import Helmet from 'react-helmet';
 import { useTranslation } from 'react-i18next';
-import { Page, PageSection, Title } from '@patternfly/react-core';
-import { Table, Thead, Tbody, Tr, Th, Td } from "@patternfly/react-table";
+import { Page, PageSection, Content, Title } from '@patternfly/react-core';
 import './example.css';
 
 
@@ -21,30 +20,7 @@ async function fetchProjects() {
   }
 
   const jsonData = await response.json();
-  var projects = []
-  console.log(jsonData);
-  if (jsonData && "data" in jsonData) {
-    if (jsonData["data"] && jsonData["data"].length > 0) {
-      if ("projects" in jsonData["data"][0]) {
-        console.log("jsonData[data][0] = " + jsonData["data"][0]);
-        console.log("data - projects = " + jsonData["data"][0]["projects"]);
-        for (var project of jsonData["data"][0]["projects"]) {
-          console.log(project);
-          var projData = {"name": project["project"], "cost": project["values"][0]["cost"]["value"]};
-          projects.push(projData);
-        }
-      } else {
-        console.log("projects not in jsonData[data][0]");
-      }
-    } else {
-      console.log("jsonData[data].length is 0");
-    }
-  } else {
-    console.log("data not in jsonData");
-  }
-  
-  console.log("projects = " + projects)
-  return projects;
+  return jsonData;
 }
 
 
@@ -71,24 +47,12 @@ export default function ExamplePage() {
           <Title headingLevel="h1">{t('Projects')}</Title>
         </PageSection>
         <PageSection>
-          <Table variant="compact">
-            <Thead>
-              <Tr>
-                <Th>Project</Th>
-                <Th>Cost</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {projects.map((project) => (
-                <Tr>
-                  <Td>{project['name']}</Td>
-                  <Td>{project['cost']}</Td>
-                </Tr>
-              ))}
-            </Tbody>
-          </Table>
+          <Content>
+            <p>
+              {projects}
+            </p>
+          </Content>
         </PageSection>
-
       </Page>
     </>
   );
