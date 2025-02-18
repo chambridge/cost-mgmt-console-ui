@@ -21,12 +21,18 @@ async function fetchProjects() {
   }
 
   const jsonData = await response.json();
+  var projects = []
   console.log(jsonData);
   if (jsonData && "data" in jsonData) {
     if (jsonData["data"] && jsonData["data"].length > 0) {
       if ("projects" in jsonData["data"][0]) {
         console.log("jsonData[data][0] = " + jsonData["data"][0]);
-        // console.log("projects = " + jsonData["data"][0]["projects"]);
+        console.log("data - projects = " + jsonData["data"][0]["projects"]);
+        for (var project of jsonData["data"][0]["projects"]) {
+          console.log(project);
+          var projData = {"name": project["project"], "cost": project["values"][0]["cost"]["value"]};
+          projects.push(projData);
+        }
       } else {
         console.log("projects not in jsonData[data][0]");
       }
@@ -37,7 +43,8 @@ async function fetchProjects() {
     console.log("data not in jsonData");
   }
   
-  return jsonData;
+  console.log("projects = " + projects)
+  return projects;
 }
 
 
@@ -46,11 +53,9 @@ export default function ExamplePage() {
   const [projects, setProjects] = React.useState([]);
   React.useEffect(() => {
     const loadProjects = async () => {
-      const { json } = await fetchProjects();
-      if (json && "data" in json && json['data'].length > 0 && "projects" in json["data"][0]){
-        console.log("setProjects");
-        setProjects(json['data'][0]['projects']);
-      }
+      var data = await fetchProjects();
+      console.log("setProjects");
+      setProjects(data);
     };
     loadProjects();
   }, [fetchProjects]);
@@ -76,7 +81,8 @@ export default function ExamplePage() {
             <Tbody>
               {projects.map((project) => (
                 <Tr>
-                  <Td>{project['project']}</Td>
+                  <Td>{project['name']}</Td>
+                  <Td>{project['cost']}</Td>
                 </Tr>
               ))}
             </Tbody>
