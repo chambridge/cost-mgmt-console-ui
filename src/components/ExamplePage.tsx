@@ -20,9 +20,23 @@ async function fetchProjects() {
     throw new Error(`Failed to fetch secret: ${response.statusText}`);
   }
 
-  const data = await response.json();
-  console.log(data);
-  return data;
+  const jsonData = await response.json();
+  console.log(jsonData);
+  if (jsonData && "data" in jsonData) {
+    if (jsonData["data"] && jsonData["data"].length > 0) {
+      if ("projects" in jsonData["data"][0]) {
+        console.log("projects = " + jsonData["data"][0["projects"]]);
+      } else {
+        console.log("projects not in jsonData[data][0]");
+      }
+    } else {
+      console.log("jsonData[data].length is 0");
+    }
+  } else {
+    console.log("data not in jsonData");
+  }
+  
+  return jsonData;
 }
 
 
@@ -60,8 +74,8 @@ export default function ExamplePage() {
             <Tbody>
               {projects.map((project) => (
                 <Tr>
-                  <Td>project.project</Td>
-                  <Td>project.values[0].cost.total.value.toFixed(2)</Td>
+                  <Td>{project['project']}</Td>
+                  <Td>{project['values'][0]['cost']['total']['value'].toFixed(2)}</Td>
                 </Tr>
               ))}
             </Tbody>
